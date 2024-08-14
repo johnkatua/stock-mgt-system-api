@@ -1,6 +1,8 @@
 from database import User
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
 from models import Register, Login
+from oauth2 import generate_access_token
 from payload_util import HttpStatus
 from utils import hash_password, verify_password
 
@@ -18,7 +20,7 @@ async def create_user(payload: Register):
   }
 
 @router.post('/login', status_code=HttpStatus.CREATED)
-async def login(payload: Login):
+async def login(payload: OAuth2PasswordRequestForm = Depends()):
   user = User.find_one({"email": payload.email.lower()})
   if not user:
     raise HTTPException(
@@ -31,3 +33,9 @@ async def login(payload: Login):
       status_code=HttpStatus.BAD_REQUEST,
       detail="Incorrect Email or Password"
     )
+  
+  access_token = generate_access_token(
+    data={"sub": user["email"]}
+  )
+
+  return {"access_token": access_token, "token_type": "bearer"}
