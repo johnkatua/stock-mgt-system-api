@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from dotenv import dotenv_values
 from jose import JWTError, jwt
+from auth.models import TokenData
 
 config = dotenv_values("./.env")
 
@@ -21,6 +22,6 @@ def verify_token(token: str, credentials_exception):
     username: str = payload.get("sub")
     if username is None:
       raise credentials_exception
-    token_data = TokenData(username)
+    TokenData(username)
   except JWTError:
     raise credentials_exception
