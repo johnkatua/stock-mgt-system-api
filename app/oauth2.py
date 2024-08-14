@@ -1,7 +1,11 @@
+from auth.models import TokenData
 from datetime import datetime, timedelta
 from dotenv import dotenv_values
+from fastapi import Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from auth.models import TokenData
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 config = dotenv_values("./.env")
 
@@ -25,3 +29,16 @@ def verify_token(token: str, credentials_exception):
     TokenData(username)
   except JWTError:
     raise credentials_exception
+  
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+  credentials_exception = HTTPException(
+    status_code="401",
+    # status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Could not validate credentials",
+    headers={
+      "WWW-Authenticate": "Bearer"
+    }
+  )
+
+  return verify_token(token, credentials_exception)
