@@ -2,7 +2,7 @@ from app.database import User
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from app.auth.models import Register, Login
-from oauth2 import generate_access_token
+from app.oauth2 import generate_access_token
 from payload_util import HttpStatus
 from utils import hash_password, verify_password
 
