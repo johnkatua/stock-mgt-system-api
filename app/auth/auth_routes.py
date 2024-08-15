@@ -25,7 +25,7 @@ async def login(payload: Login):
   if not user:
     raise HTTPException(
       status_code=HttpStatus.NOT_FOUND,
-      detail=f"No user with the email of {payload.email}"
+      detail=f"No user with the email of {payload.email} found"
     )
   
   if not verify_password(payload.password, user["password"]):
