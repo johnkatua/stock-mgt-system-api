@@ -21,7 +21,7 @@ app.add_middleware(
   allow_headers=["*"]
 )
 
-app.include_router(auth_routes, tags=['Auth'], prefix='/api/auth')
+app.include_router(auth_routes.router, tags=['Auth'], prefix='/api/auth')
 
 @app.get("/api/healthcheck")
 def root():
