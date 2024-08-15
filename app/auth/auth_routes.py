@@ -20,7 +20,7 @@ async def create_user(payload: Register):
   }
 
 @router.post('/login', status_code=HttpStatus.CREATED)
-async def login(payload: OAuth2PasswordRequestForm = Depends()):
+async def login(payload: Login):
   user = User.find_one({"email": payload.email.lower()})
   if not user:
     raise HTTPException(
