@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import dotenv_values
 from app.auth import auth_routes
+from app.oauth2 import get_current_user
 
 config = dotenv_values()
 
@@ -24,5 +25,5 @@ app.add_middleware(
 app.include_router(auth_routes.router, tags=['Auth'], prefix='/api/auth')
 
 @app.get("/api/healthcheck")
-def root():
-  return {"message": "Welcome"}
+def root(test = Depends(get_current_user)):
+  return {"message": f"Welcome {test}"}
