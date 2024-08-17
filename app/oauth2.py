@@ -22,30 +22,9 @@ def generate_access_token(data: dict):
   encoded_jwt = jwt.encode(to_encode, secret_key, algorithm=hash_algorithm)
   return encoded_jwt
 
-# def verify_token(token: str, credentials_exception):
-#   try:
-#     payload = jwt.decode(token, secret_key, algorithms=[hash_algorithm])
-#     username: str = payload.get("sub")
-#     if username is None:
-#       raise credentials_exception
-#     TokenData(username)
-#   except JWTError:
-#     raise credentials_exception
-
 def decode_token(token: str) -> dict:
   try:
     decoded_token = jwt.decode(token, secret_key, algorithms=[hash_algorithm])
     return decoded_token if decoded_token["exp"] >= time.time() else None
   except:
     return {}
-
-# def get_current_user(token: str = Depends(oauth2_scheme)):
-#   credentials_exception = HTTPException(
-#     status_code=HttpStatus.UNAUTHORIZED,
-#     detail="Could not validate credentials",
-#     headers={
-#       "WWW-Authenticate": "Bearer"
-#     }
-#   )
-
-#   return verify_token(token, credentials_exception)
