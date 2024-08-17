@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import dotenv_values
 from app.auth import auth_routes
 from app.auth.auth_bearer import JWTBearer
-# from app.oauth2 import get_current_user
 
 config = dotenv_values()
 
