@@ -1,6 +1,7 @@
 from fastapi import Request, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.payload_util import HttpStatus
+from app.oauth2 import decode_token
 
 class JWTBearer(HTTPBearer):
   def __init__(self, auto_error: bool = True):
@@ -11,9 +12,21 @@ class JWTBearer(HTTPBearer):
     if credentials:
       if not credentials.scheme == "Bearer":
         raise HTTPException(status_code=HttpStatus.UNAUTHORIZED, detail="Invalid Authentication scheme.")
-      if not self.verify_jwt(credentials.credentials):
+      if not self.verify_token(credentials.credentials):
         raise HTTPException(status_code=HttpStatus.UNAUTHORIZED, detail="Invalid Authentication scheme.")
       return credentials.credentials
     else:
       raise HTTPException(status_code=HttpStatus.UNAUTHORIZED, detail="Invalid Authorization code.")
-    # return await super().__call__(request)
+  
+  def verify_token(self, token: str) -> bool:
+    isTokenValid: bool = False
+
+    try:
+      payload = decode_token(token)
+    except:
+      payload = None
+
+    if payload:
+      isTokenValid = True
+
+    return isTokenValid
