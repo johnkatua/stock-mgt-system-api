@@ -13,11 +13,11 @@ config = dotenv_values("./.env")
 
 secret_key = config["SECRET_KEY"]
 hash_algorithm = config["ALGORITHM"]
-expiry_time = config["ACCESS_TOKEN_EXPIRE_MINUTES"]
+expiry_time = config["ACCESS_TOKEN_EXPIRE_SECONDS"]
 
 def generate_access_token(data: dict):
   to_encode = data.copy()
-  expires_in = datetime.now() + timedelta(minutes=expiry_time)
+  expires_in = time.time() + float(expiry_time)
   to_encode.update({"exp": expires_in})
   encoded_jwt = jwt.encode(to_encode, secret_key, algorithm=hash_algorithm)
   return encoded_jwt
