@@ -1,11 +1,7 @@
 import time
-from app.auth.models import TokenData
-from datetime import datetime, timedelta
 from dotenv import dotenv_values
-from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
-from app.payload_util import HttpStatus
+from jose import jwt
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
