@@ -1,3 +1,4 @@
+import time
 from app.auth.models import TokenData
 from datetime import datetime, timedelta
 from dotenv import dotenv_values
@@ -30,7 +31,13 @@ def verify_token(token: str, credentials_exception):
     TokenData(username)
   except JWTError:
     raise credentials_exception
-  
+
+def decode_token(token: str) -> dict:
+  try:
+    decoded_token = jwt.decode(token, secret_key, algorithms=[hash_algorithm])
+    return decoded_token if decoded_token["exp"] >= time.time() else None
+  except:
+    return {}
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
   credentials_exception = HTTPException(
