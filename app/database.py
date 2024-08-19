@@ -10,3 +10,4 @@ client = MongoClient(mongo_uri)
 db = client[database]
 
 User = db.users
+Supplier = db.suppliers
