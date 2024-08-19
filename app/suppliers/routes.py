@@ -45,22 +45,30 @@ async def list_suppliers():
 
 @router.put('/id', response_description="Update a supplier", response_model=SupplierSchema)
 async def update_supplier(id: str, payload: SupplierSchema = Body(...)):
-  supplier = {k: v for k, v in payload.model_dump().items() if v is not None}
+  # Filter out None values from the input payload
+  update_data = {k: v for k, v in payload.model_dump().items() if v is not None}
+
+  if not update_data:
+    return JSONResponse(
+      status_code=HttpStatus.BAD_REQUEST,
+      data=jsonable_encoder({
+        "msg": "No valid fields provided for update"
+      })
+    )
 
   try:
-    if len(supplier) >= 1:
-      update_result = await Supplier.update_one(
-        {"_id": id}, {"$set": supplier}
-      )
+    update_result = await Supplier.update_one({"_id": id}, {"$set": update_data})
 
-      if update_result.modified_count == 0:
+    if update_result.modified_count == 0:
         return JSONResponse(
           status_code=HttpStatus.NOT_FOUND,
           data=jsonable_encoder({
             "msg": f"Supplier with ID {id} not found"
           })
         )
-    if (existing_supplier := await Supplier.find_one({"_id": id})) is not None:
+    
+    updated_supplier = await Supplier.find_one({"_id": id})
+    if updated_supplier:
       return JSONResponse(
           status_code=HttpStatus.NOT_FOUND,
           data=jsonable_encoder({
