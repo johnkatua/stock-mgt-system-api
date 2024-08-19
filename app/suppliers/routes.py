@@ -1,14 +1,21 @@
 from app.database import Supplier
 from app.suppliers.models import SupplierSchema, UpdateSupplierSchema
 from app.payload_util import HttpStatus
-from fastapi import APIRouter, Body
+from app.auth.auth_bearer import JWTBearer
+from fastapi import APIRouter, Body, Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from typing import List
 
 router = APIRouter()
 
-@router.post('/', response_description="Create a new supplier", status_code=HttpStatus.CREATED, response_model=SupplierSchema)
+@router.post(
+    '/', 
+    response_description="Create a new supplier", 
+    status_code=HttpStatus.CREATED, 
+    response_model=SupplierSchema,
+    dependencies=[Depends(JWTBearer())]
+  )
 async def create_supplier(payload: SupplierSchema = Body(...)):
   supplier = jsonable_encoder(payload)
   try:
@@ -27,7 +34,12 @@ async def create_supplier(payload: SupplierSchema = Body(...)):
       })
     )
   
-@router.get('/', response_description="List all suppliers", response_model=List[SupplierSchema])
+@router.get(
+    '/', 
+    response_description="List all suppliers", 
+    response_model=List[SupplierSchema],
+    dependencies=[Depends(JWTBearer())]
+  )
 async def list_suppliers():
   try:
     suppliers = await list(Supplier.find(limit=100))
@@ -43,7 +55,12 @@ async def list_suppliers():
       })
     )
 
-@router.put('/id', response_description="Update a supplier", response_model=UpdateSupplierSchema)
+@router.put(
+    '/id', 
+    response_description="Update a supplier", 
+    response_model=UpdateSupplierSchema,
+    dependencies=[Depends(JWTBearer())]
+  )
 async def update_supplier(id: str, payload: UpdateSupplierSchema = Body(...)):
   # Filter out None values from the input payload
   update_data = {k: v for k, v in payload.model_dump().items() if v is not None}
@@ -84,7 +101,11 @@ async def update_supplier(id: str, payload: UpdateSupplierSchema = Body(...)):
     )
 
 
-@router.delete('/{id}', response_description="Delete a supplier")
+@router.delete(
+    '/{id}', 
+    response_description="Delete a supplier",
+    dependencies=[Depends(JWTBearer())]
+  )
 async def delete_supplier(id: str):
   try:
     delete_result = Supplier.delete_one({"id": id})
