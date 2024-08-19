@@ -20,3 +20,19 @@ class SupplierSchema(BaseModel):
         "address": "Tala, Kenya"
       }
     }
+
+class UpdateSupplierSchema(BaseModel):
+  supplier_name: Optional[str]
+  contact_name: Optional[str]
+  phone: Optional[str]
+  address: Optional[str]
+
+  class Config:
+    schema_extra = {
+      "example": {
+        "supplier_name": "Test Enterprises",
+        "contact_name": "Test User",
+        "phone": "0769654321",
+        "address": "Tala, Kenya"
+      }
+    }
