@@ -2,7 +2,7 @@ import uuid
 from typing import Optional
 from pydantic import BaseModel, Field
 
-class Supplier(BaseModel):
+class SupplierSchema(BaseModel):
   supplier_id: str = Field(default_factory=uuid.uuid4, alias="_id")
   supplier_name: str = Field(...)
   contact_name: str = Field(...)

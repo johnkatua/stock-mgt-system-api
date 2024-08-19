@@ -1,9 +1,9 @@
 from app.database import User
-from fastapi import APIRouter, HTTPException
 from app.auth.models import Register, Login
 from app.oauth2 import generate_access_token
 from app.payload_util import HttpStatus
 from app.utils import hash_password, verify_password
+from fastapi import APIRouter, HTTPException
 
 router = APIRouter()
 
