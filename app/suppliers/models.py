@@ -10,8 +10,8 @@ class SupplierSchema(BaseModel):
   address: Optional[str]
 
   class Config:
-    allow_population_by_field_name = True
-    schema_extra = {
+    populate_by_name = True
+    json_schema_extra = {
       "example": {
         "_id": "0afdb3a9-6ec5-4ac6-b435-e36cd325cae8",
         "supplier_name": "Test Enterprises",
@@ -28,7 +28,7 @@ class UpdateSupplierSchema(BaseModel):
   address: Optional[str]
 
   class Config:
-    schema_extra = {
+    json_schema_extra = {
       "example": {
         "supplier_name": "Test Enterprises",
         "contact_name": "Test User",
