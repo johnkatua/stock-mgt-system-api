@@ -12,7 +12,7 @@ async def create_user(payload: Register):
   hashed_pwd = hash_password(payload.password)
   user = dict(payload)
   user["password"] = hashed_pwd
-  User.insert_one(user)
+  await User.insert_one(user)
   return {
     "status_code": 200,
     "detail": "User created successfully"
@@ -20,7 +20,7 @@ async def create_user(payload: Register):
 
 @router.post('/login', status_code=HttpStatus.CREATED)
 async def login(payload: Login):
-  user = User.find_one({"email": payload.email.lower()})
+  user = await User.find_one({"email": payload.email.lower()})
   if not user:
     raise HTTPException(
       status_code=HttpStatus.NOT_FOUND,
