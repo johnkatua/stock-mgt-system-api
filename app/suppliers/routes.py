@@ -1,5 +1,5 @@
 from app.database import Supplier
-from app.suppliers.models import SupplierSchema
+from app.suppliers.models import SupplierSchema, UpdateSupplierSchema
 from app.payload_util import HttpStatus
 from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
@@ -43,8 +43,8 @@ async def list_suppliers():
       })
     )
 
-@router.put('/id', response_description="Update a supplier", response_model=SupplierSchema)
-async def update_supplier(id: str, payload: SupplierSchema = Body(...)):
+@router.put('/id', response_description="Update a supplier", response_model=UpdateSupplierSchema)
+async def update_supplier(id: str, payload: UpdateSupplierSchema = Body(...)):
   # Filter out None values from the input payload
   update_data = {k: v for k, v in payload.model_dump().items() if v is not None}
 
