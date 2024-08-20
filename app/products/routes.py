@@ -17,7 +17,7 @@ async def create_product_route(payload: ProductSchema = Body(...)):
 @router.get(
     "/",
     response_description="List all products",
-    dependencies=[Depends(JWTBearer)]
+    dependencies=[Depends(JWTBearer())]
   )
 async def list_products_route():
   await list_products()
@@ -25,7 +25,7 @@ async def list_products_route():
 @router.delete(
     "/{id}",
     response_description="Delete a product",
-    dependencies=[Depends(JWTBearer)]
+    dependencies=[Depends(JWTBearer())]
   )
 async def delete_product_route(id: str):
   await delete_product(id)
