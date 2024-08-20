@@ -10,4 +10,9 @@ class ProductSchema(BaseModel):
   quantity_in_stock: Optional[int] = None
   reorder_level: Optional[int] = None
 
-class 
+class UpdateProductSchema(BaseModel):
+  product_name: Optional[str] = None
+  unit_price: Optional[int] = None
+  supplier_id: Optional[str] = None
+  quantity_in_stock: Optional[int] = None
+  reorder_level: Optional[int] = None
