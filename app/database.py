@@ -11,3 +11,4 @@ db = client[database]
 
 User = db.users
 Supplier = db.suppliers
+Product = db.products
