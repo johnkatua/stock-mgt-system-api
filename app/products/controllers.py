@@ -17,7 +17,7 @@ async def create_product(payload: ProductSchema):
     )
   except Exception as e:
     return JSONResponse(
-      status_code=HttpStatus.CREATED,
+      status_code=HttpStatus.SERVER_ERROR,
       data=jsonable_encoder({
         "msg": str(e)
       })
@@ -32,7 +32,32 @@ async def list_products() -> List[ProductSchema]:
     )
   except Exception as e:
     return JSONResponse(
-      status_code=HttpStatus.CREATED,
+      status_code=HttpStatus.SERVER_ERROR,
+      data=jsonable_encoder({
+        "msg": str(e)
+      })
+    )
+  
+async def delete_product(id: str):
+  try:
+    delete_result = await Product.delete_one({"id": id})
+    if delete_result.deleted_count == 1:
+      return JSONResponse(
+        status_code=HttpStatus.OK,
+        data=jsonable_encoder({
+          "msg": f"Product with ID {id} deleted successfully"
+        })
+      )
+    
+    return JSONResponse(
+      status_code=HttpStatus.NOT_FOUND,
+      data=jsonable_encoder({
+        "msg": f"Product with  ID {id} not found"
+      })
+    )
+  except Exception as e:
+    return JSONResponse(
+      status_code=HttpStatus.SERVER_ERROR,
       data=jsonable_encoder({
         "msg": str(e)
       })
