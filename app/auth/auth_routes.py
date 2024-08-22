@@ -7,7 +7,7 @@ from fastapi import APIRouter, HTTPException
 
 router = APIRouter()
 
-@router.post('/register', status_code=HttpStatus.CREATED)
+@router.post("/register", status_code=HttpStatus.CREATED)
 async def create_user(payload: Register):
   hashed_pwd = hash_password(payload.password)
   user = dict(payload)
