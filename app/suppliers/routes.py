@@ -101,7 +101,7 @@ async def update_supplier(id: str, payload: UpdateSupplierSchema = Body(...)):
     )
 
 @router.delete(
-    '/{id}', 
+    "/{id}", 
     response_description="Delete a supplier",
     dependencies=[Depends(JWTBearer())]
   )
