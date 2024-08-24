@@ -19,17 +19,17 @@ router = APIRouter()
 async def create_supplier(payload: SupplierSchema = Body(...)):
   supplier = jsonable_encoder(payload)
   try:
-    await Supplier.insert_one(supplier)
+    Supplier.insert_one(supplier)
     return JSONResponse(
       status_code=HttpStatus.CREATED,
-      data=jsonable_encoder({
+      content=jsonable_encoder({
         "msg": "Supplier created successfully"
       })
     )
   except Exception as e:
     return JSONResponse(
       status_code=HttpStatus.SERVER_ERROR,
-      data=jsonable_encoder({
+      content=jsonable_encoder({
         "msg": str(e)
       })
     )
