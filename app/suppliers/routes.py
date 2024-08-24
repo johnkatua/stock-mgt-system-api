@@ -42,15 +42,15 @@ async def create_supplier(payload: SupplierSchema = Body(...)):
   )
 async def list_suppliers():
   try:
-    suppliers = await list(Supplier.find(limit=100))
+    suppliers = list(Supplier.find(limit=100))
     return JSONResponse(
       status_code=HttpStatus.OK,
-      data=suppliers
+      content=suppliers
     )
   except Exception as e:
     return JSONResponse(
       status_code=HttpStatus.SERVER_ERROR,
-      data=jsonable_encoder({
+      content=jsonable_encoder({
         "msg": str(e)
       })
     )
