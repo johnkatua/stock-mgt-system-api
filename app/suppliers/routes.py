@@ -107,7 +107,7 @@ async def update_supplier(id: str, payload: UpdateSupplierSchema = Body(...)):
   )
 async def delete_supplier(id: str):
   try:
-    delete_result = Supplier.delete_one({"id": id})
+    delete_result = Supplier.delete_one({"_id": id})
     if delete_result.deleted_count == 1:
       return JSONResponse(
           status_code=HttpStatus.OK,
