@@ -111,21 +111,21 @@ async def delete_supplier(id: str):
     if delete_result.deleted_count == 1:
       return JSONResponse(
           status_code=HttpStatus.OK,
-          data=jsonable_encoder({
+          content=jsonable_encoder({
             "msg": f"Supplier with ID {id} deleted successfully"
           })
         )
     
     return JSONResponse(
       status_code=HttpStatus.NOT_FOUND,
-      data=jsonable_encoder({
+      content=jsonable_encoder({
         "msg": f"Supplier with ID {id} not found"
       })
     )
   except Exception as e:
     return JSONResponse(
       status_code=HttpStatus.SERVER_ERROR,
-      data=jsonable_encoder({
+      content=jsonable_encoder({
         "msg": str(e)
       })
     )
