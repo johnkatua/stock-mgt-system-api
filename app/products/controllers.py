@@ -11,14 +11,14 @@ async def create_product(payload: ProductSchema):
     await Product.insert_one(product)
     return JSONResponse(
       status_code=HttpStatus.CREATED,
-      data=jsonable_encoder({
+      content=jsonable_encoder({
         "msg": "Product created successfully"
       })
     )
   except Exception as e:
     return JSONResponse(
       status_code=HttpStatus.SERVER_ERROR,
-      data=jsonable_encoder({
+      content=jsonable_encoder({
         "msg": str(e)
       })
     )
