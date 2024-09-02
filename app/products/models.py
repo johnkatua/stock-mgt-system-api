@@ -7,8 +7,8 @@ class ProductSchema(BaseModel):
   product_name: str = Field(...)
   unit_price: int = Field(...)
   supplier_id: str = Field(...)
-  quantity_in_stock: Optional[int] = None
-  reorder_level: Optional[int] = None
+  quantity_in_stock: Optional[int]
+  reorder_level: Optional[int]
 
   class Config:
     populate_by_name = True

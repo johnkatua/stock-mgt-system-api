@@ -25,7 +25,7 @@ async def create_product(payload: ProductSchema):
   
 async def list_products() -> List[ProductSchema]:
   try:
-    products = await list(Product.find(limit=100))
+    products = list(Product.find(limit=100))
     return JSONResponse(
       status_code=HttpStatus.OK,
       content=products
