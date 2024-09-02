@@ -28,12 +28,12 @@ async def list_products() -> List[ProductSchema]:
     products = await list(Product.find(limit=100))
     return JSONResponse(
       status_code=HttpStatus.OK,
-      data=products
+      content=products
     )
   except Exception as e:
     return JSONResponse(
       status_code=HttpStatus.SERVER_ERROR,
-      data=jsonable_encoder({
+      content=jsonable_encoder({
         "msg": str(e)
       })
     )
