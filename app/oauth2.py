@@ -1,7 +1,7 @@
 import time
 from dotenv import dotenv_values
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt
+from jose import jwt, JWTError
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -21,6 +21,13 @@ def generate_access_token(data: dict):
 def generate_refresh_token(data: dict):
   encoded_jwt = jwt.encode(data, secret_key, algorithm=hash_algorithm)
   return encoded_jwt
+
+def get_token_payload(token: str):
+  try:
+    payload = jwt.decode(token, secret_key, algorithms=hash_algorithm)
+  except JWTError:
+    return None
+  return payload
 
 def decode_token(token: str) -> dict:
   try:
