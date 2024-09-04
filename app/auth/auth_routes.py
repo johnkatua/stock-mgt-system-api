@@ -1,6 +1,6 @@
 from app.database import User
 from app.auth.models import Register, Login
-from app.oauth2 import generate_access_token
+from app.oauth2 import generate_access_token, get_token_payload
 from app.payload_util import HttpStatus
 from app.utils import hash_password, verify_password
 from fastapi import APIRouter, HTTPException
@@ -34,7 +34,14 @@ async def login(payload: Login):
     )
   
   access_token = generate_access_token(
-    data={"sub": user["email"]}
+    data={"user": user["email"]}
   )
 
-  return {"access_token": access_token, "token_type": "bearer"}
+  decoded_token = get_token_payload(access_token)
+
+  return {
+    "access_token": access_token, 
+    "token_type": "bearer", 
+    "expires_in": decoded_token['exp'],
+    "user": decoded_token['user']
+  }
