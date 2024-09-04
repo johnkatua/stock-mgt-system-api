@@ -45,3 +45,40 @@ async def login(payload: Login):
     "expires_in": decoded_token['exp'],
     "user": decoded_token['user']
   }
+
+@router.post("/refresh-token", status_code=HttpStatus.OK)
+async def refresh_token(token: str):
+  decoded_token = get_token_payload(token)
+  user_email = decoded_token.get('user', None)
+  if not user_email:
+    raise HTTPException(
+      status_code=HttpStatus.UNAUTHORIZED,
+      detail="Invalid access token",
+      headers={
+        "WWW-Authenticate": "Bearer"
+      }
+    )
+  
+  user = User.find_one({"email": user_email})
+
+  if not user:
+    raise HTTPException(
+      status_code=HttpStatus.UNAUTHORIZED,
+      detail="Invalid access token",
+      headers={
+        "WWW-Authenticate": "Bearer"
+      }
+    )
+  
+  access_token = generate_access_token(
+    data={"user": user["email"]}
+  )
+
+  decoded_token = get_token_payload(access_token)
+
+  return {
+    "access_token": access_token, 
+    "token_type": "bearer", 
+    "expires_in": decoded_token['exp'],
+    "user": decoded_token['user']
+  }
