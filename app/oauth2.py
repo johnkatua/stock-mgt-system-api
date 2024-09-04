@@ -18,10 +18,6 @@ def generate_access_token(data: dict):
   encoded_jwt = jwt.encode(to_encode, secret_key, algorithm=hash_algorithm)
   return encoded_jwt
 
-def generate_refresh_token(data: dict):
-  encoded_jwt = jwt.encode(data, secret_key, algorithm=hash_algorithm)
-  return encoded_jwt
-
 def get_token_payload(token: str):
   try:
     payload = jwt.decode(token, secret_key, algorithms=hash_algorithm)

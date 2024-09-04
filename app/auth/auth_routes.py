@@ -1,5 +1,5 @@
 from app.database import User
-from app.auth.models import Register, Login
+from app.auth.models import Register, Login, Token
 from app.oauth2 import generate_access_token, get_token_payload
 from app.payload_util import HttpStatus
 from app.utils import hash_password, verify_password
@@ -46,10 +46,12 @@ async def login(payload: Login):
     "user": decoded_token['user']
   }
 
-@router.post("/refresh-token", status_code=HttpStatus.OK)
-async def refresh_token(token: str):
-  decoded_token = get_token_payload(token)
-  user_email = decoded_token.get('user', None)
+@router.post("/refresh-token", status_code=HttpStatus.CREATED)
+async def refresh_token(token: Token):
+  decoded_token = get_token_payload(token.access_token)
+  user_email = None
+  if decoded_token is not None:
+    user_email = decoded_token.get('user', None)
   if not user_email:
     raise HTTPException(
       status_code=HttpStatus.UNAUTHORIZED,
