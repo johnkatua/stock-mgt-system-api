@@ -1,5 +1,6 @@
 import time
 from dotenv import dotenv_values
+import os
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 
@@ -7,9 +8,11 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 config = dotenv_values("./.env")
 
-secret_key = config["SECRET_KEY"]
-hash_algorithm = config["ALGORITHM"]
-expiry_time = config["ACCESS_TOKEN_EXPIRE_SECONDS"]
+secret_key =  os.getenv("SECRET_KEY") #config["SECRET_KEY"]
+# hash_algorithm = config["ALGORITHM"]
+hash_algorithm = os.getenv("ALGORITHM")
+# expiry_time = config["ACCESS_TOKEN_EXPIRE_SECONDS"]
+expiry_time = os.getenv("ACCESS_TOKEN_EXPIRE_SECONDS")
 
 def generate_access_token(data: dict):
   to_encode = data.copy()
