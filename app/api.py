@@ -1,14 +1,15 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import dotenv_values
+import os
 from app.auth import auth_routes
 from app.suppliers.routes import router as supplier_routes
 from app.products.routes import router as product_routes
 from app.auth.auth_bearer import JWTBearer
+from dotenv import load_dotenv
 
-config = dotenv_values()
-
-client_origin = config["CLIENT_ORIGIN"]
+load_dotenv()
+client_origin = os.getenv("CLIENT_ORIGIN")
 
 app = FastAPI()
 

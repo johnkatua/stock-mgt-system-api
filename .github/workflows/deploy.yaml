@@ -18,11 +18,6 @@ jobs:
     outputs:
       tag: ${{ steps.tag.outputs.TAG }}
     steps:
-      - name: Generate tag
-        id: tag
-        run: 
-          echo "TAG=$(date +'%y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV  
-      
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -49,6 +44,35 @@ jobs:
       uses: digitalocean/action-doctl@v2
       with:
         token: '${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}'
+
+    - name: Get base64 encoded secrets
+      id: secrets
+      run: |
+        echo "::set-output name=mongo_uri::$(echo -n ${{ secrets.MONGO_URI }} | base64)"
+        echo "::set-output name=secret_key::$(echo -n ${{ secrets.SECRET_KEY }} | base64)"
+        echo "::set-output name=algorithm::$(echo -n ${{ secrets.ALGORITHM }} | base64)"
+        echo "::set-output name=access_token_expire_seconds::$(echo -n ${{ secrets.ACCESS_TOKEN_EXPIRE_SECONDS }} | base64)"
+        echo "::set-output name=database::$(echo -n ${{ secrets.DATABASE }} | base64)"
+        echo "::set-output name=client_origin::$(echo -n ${{ secrets.CLIENT_ORIGIN }} | base64)"
+        echo "::set-output name=mongo_pass::$(echo -n ${{ secrets.MONGO_PASS }} | base64)"
+        echo "::set-output name=mongo_user::$(echo -n ${{ secrets.MONGO_USER }} | base64)"
+        echo "::set-output name=mongo_cluster::$(echo -n ${{ secrets.MONGO_CLUSTER }} | base64)"
+        
+
+    
+    - name: Update deployment file
+      run: |
+       
+        sed -i 's/<base64_encoded_secret_key>/'"${{ steps.secrets.outputs.secret_key }}"'/' config/deployment.yaml
+        sed -i 's/<base64_encoded_algorithm>/'"${{ steps.secrets.outputs.algorithm }}"'/' config/deployment.yaml
+        sed -i 's/<base64_encoded_access_token_expire_seconds>/'"${{ steps.secrets.outputs.access_token_expire_seconds }}"'/' config/deployment.yaml
+        sed -i 's/<base64_encoded_database>/'"${{ steps.secrets.outputs.database }}"'/' config/deployment.yaml
+        sed -i 's/<base64_encoded_client_origin>/'"${{ steps.secrets.outputs.client_origin }}"'/' config/deployment.yaml
+        sed -i 's/<base64_encoded_mongo_pass>/'"${{ steps.secrets.outputs.mongo_pass }}"'/' config/deployment.yaml
+        sed -i 's/<base64_encoded_mongo_user>/'"${{ steps.secrets.outputs.mongo_user }}"'/' config/deployment.yaml
+        sed -i 's/<base64_encoded_mongo_cluster>/'"${{ steps.secrets.outputs.mongo_cluster }}"'/' config/deployment.yaml
+
+   
   
     - name: Update deployment file
       run: |
@@ -64,7 +88,7 @@ jobs:
         doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{secrets.CLUSTER_NAME }}
     - name: Deploy to DigitalOcean Kubernetes
       run: |
-        # kubectl delete -f $GITHUB_WORKSPACE/config/deployment.yaml
+        kubectl delete -f $GITHUB_WORKSPACE/config/deployment.yaml
         kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yaml
     - name: Verify deployment
       run: kubectl rollout status deployment/lakehouseenterprise-backend
