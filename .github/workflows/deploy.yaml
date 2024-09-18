@@ -49,6 +49,30 @@ jobs:
       uses: digitalocean/action-doctl@v2
       with:
         token: '${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}'
+
+    - name: Get base64 encoded secrets
+      id: secrets
+      run: |
+        echo "::set-output name=mongo_uri::$(echo -n ${{ secrets.MONGO_URI }} | base64)"
+        echo "::set-output name=secret_key::$(echo -n ${{ secrets.SECRET_KEY }} | base64)"
+        echo "::set-output name=algorithm::$(echo -n ${{ secrets.ALGORITHM }} | base64)"
+        echo "::set-output name=access_token_expire_seconds::$(echo -n ${{ secrets.ACCESS_TOKEN_EXPIRE_SECONDS }} | base64)"
+        echo "::set-output name=database::$(echo -n ${{ secrets.DATABASE }} | base64)"
+        echo "::set-output name=client_origin::$(echo -n ${{ secrets.CLIENT_ORIGIN }} | base64)"
+        
+
+    
+    - name: Update deployment file
+      run: |
+       
+        sed -i 's/<base64_encoded_mongo_uri>/'"${{ steps.secrets.outputs.mongo_uri }}"'/' config/deployment.yaml
+        sed -i 's/<base64_encoded_secret_key>/'"${{ steps.secrets.outputs.secret_key }}"'/' config/deployment.yaml
+        sed -i 's/<base64_encoded_algorithm>/'"${{ steps.secrets.outputs.algorithm }}"'/' config/deployment.yaml
+        sed -i 's/<base64_encoded_access_token_expire_seconds>/'"${{ steps.secrets.outputs.access_token_expire_seconds }}"'/' config/deployment.yaml
+        sed -i 's/<base64_encoded_database>/'"${{ steps.secrets.outputs.database }}"'/' config/deployment.yaml
+        sed -i 's/<base64_encoded_client_origin>/'"${{ steps.secrets.outputs.client_origin }}"'/' config/deployment.yaml
+
+   
   
     - name: Update deployment file
       run: |
