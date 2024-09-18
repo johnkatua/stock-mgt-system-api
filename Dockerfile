@@ -13,5 +13,7 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY .  /code/
 
+EXPOSE 8081
 
-CMD ["fastapi", "run", "main.py", "--port", "80"]
+
+CMD ["python", "main.py"]
