@@ -9,7 +9,9 @@ data:
   ACCESS_TOKEN_EXPIRE_SECONDS: <base64_encoded_access_token_expire_seconds>
   DATABASE: <base64_encoded_database>
   CLIENT_ORIGIN: <base64_encoded_client_origin>
-
+  MONGO_PASS : <base64_encoded_mongo_pass>
+  MONGO_USER : <base64_encoded_mongo_user>
+  MONGO_CLUSTER : <base64_encoded_mongo_cluster>
 ---
 
 
@@ -40,8 +42,6 @@ spec:
         ports:
         - containerPort: 8081
         env:
-        - name: MONGO_URI
-          value: "mongodb+srv://johnkatua:sIlzKWnBRkxOWAPq@cluster0.b4ovhgj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
         - name: SECRET_KEY
           valueFrom:
             secretKeyRef:
@@ -71,6 +71,24 @@ spec:
             secretKeyRef:
               name: db-secrets
               key: CLIENT_ORIGIN
+        
+        - name : MONGO_PASS
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: MONGO_PASS
+
+        - name : MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: MONGO_USER
+
+        - name : MONGO_CLUSTER
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: MONGO_CLUSTER
 
 
         
