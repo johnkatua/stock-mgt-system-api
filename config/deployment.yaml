@@ -4,7 +4,6 @@ metadata:
   name: db-secrets
 type: Opaque
 data:
-  MONGO_URI: <base64_encoded_mongo_uri>
   SECRET_KEY: <base64_encoded_secret_key>
   ALGORITHM: <base64_encoded_algorithm>
   ACCESS_TOKEN_EXPIRE_SECONDS: <base64_encoded_access_token_expire_seconds>
