@@ -21,7 +21,13 @@ jobs:
       - name: Generate tag
         id: tag
         run: 
-          echo "TAG=$(date +'%y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV  
+          echo "MONGO_URI=$(echo -n ${{ secrets.MONGO_URI }})" >> .env
+          echo "SECRET_KEY=$(echo -n ${{ secrets.SECRET_KEY }})" >> .env
+          echo "ALGORITHM=$(echo -n ${{ secrets.ALGORITHM }})" >> .env
+          echo "ACCESS_TOKEN_EXPIRE_SECONDS=$(echo -n ${{ secrets.ACCESS_TOKEN_EXPIRE_SECONDS }})" >> .env
+          echo "DATABASE=$(echo -n ${{ secrets.DATABASE }})" >> .env
+          echo "CLIENT_ORIGIN=$(echo -n ${{ secrets.CLIENT_ORIGIN }})" >> .env
+
       
       - name: Login to Docker Hub
         uses: docker/login-action@v3
