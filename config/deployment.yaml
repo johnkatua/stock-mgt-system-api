@@ -4,7 +4,6 @@ metadata:
   name: db-secrets
 type: Opaque
 data:
-  MONGO_URI: "bW9uZ29kYitzcnY6Ly9qb2hua2F0dWE6c0lsektXbkJSa3hPV0FQcUBjbHVzdGVyMC5iNG92aGdq Lm1vbmdvZGIubmV0Lz9yZXRyeVdyaXRlcz10cnVlJnc9bWFqb3JpdHkmYXBwTmFtZT1DbHVzdGVy MA=="
   SECRET_KEY: <base64_encoded_secret_key>
   ALGORITHM: <base64_encoded_algorithm>
   ACCESS_TOKEN_EXPIRE_SECONDS: <base64_encoded_access_token_expire_seconds>
@@ -42,11 +41,7 @@ spec:
         - containerPort: 3000
         env:
         - name: MONGO_URI
-          valueFrom:
-            secretKeyRef:
-              name: db-secrets
-              key: MONGO_URI
-
+          value: "mongodb+srv://johnkatua:sIlzKWnBRkxOWAPq@cluster0.b4ovhgj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
         - name: SECRET_KEY
           valueFrom:
             secretKeyRef:
