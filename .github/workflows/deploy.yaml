@@ -65,7 +65,7 @@ jobs:
     - name: Update deployment file
       run: |
        
-       
+        # sed -i 's/<base64_encoded_mongo_uri>/'"${{ steps.secrets.outputs.mongo_uri }}"'/' config/deployment.yaml
         sed -i 's/<base64_encoded_secret_key>/'"${{ steps.secrets.outputs.secret_key }}"'/' config/deployment.yaml
         sed -i 's/<base64_encoded_algorithm>/'"${{ steps.secrets.outputs.algorithm }}"'/' config/deployment.yaml
         sed -i 's/<base64_encoded_access_token_expire_seconds>/'"${{ steps.secrets.outputs.access_token_expire_seconds }}"'/' config/deployment.yaml
@@ -88,7 +88,7 @@ jobs:
         doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{secrets.CLUSTER_NAME }}
     - name: Deploy to DigitalOcean Kubernetes
       run: |
-        # kubectl delete -f $GITHUB_WORKSPACE/config/deployment.yaml
+        kubectl delete -f $GITHUB_WORKSPACE/config/deployment.yaml
         kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yaml
     - name: Verify deployment
       run: kubectl rollout status deployment/lakehouseenterprise-backend
