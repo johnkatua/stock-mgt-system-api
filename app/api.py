@@ -1,20 +1,30 @@
+import os
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import dotenv_values
-import os
+from functools import lru_cache
 from app.auth import auth_routes
 from app.suppliers.routes import router as supplier_routes
 from app.products.routes import router as product_routes
 from app.auth.auth_bearer import JWTBearer
+from app.config import Settings
 
-config = dotenv_values()
-
-# client_origin = config["CLIENT_ORIGIN"]
 client_origin = os.getenv("CLIENT_ORIGIN")
 
 app = FastAPI()
 
+@lru_cache
+def get_settings() -> Settings:
+  """Load and cache settings from environment."""
+  return Settings()
+
+# Apply settings
+settings = get_settings()
+
+# print(settings)
+
+
 origins = [
+  # settings.client_origin
   client_origin
 ]
 
