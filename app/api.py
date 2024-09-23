@@ -22,8 +22,9 @@ def get_settings() -> Settings:
 settings = get_settings()
 
 origins = [
-  client_origin,
-  client_localhost
+  "*"
+  # client_origin,
+  # client_localhost
 ]
 
 app.add_middleware(
