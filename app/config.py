@@ -6,6 +6,7 @@ class Settings(BaseSettings):
   mongo_cluster: str
   database: str
   client_origin: str
+  client_localhost: str
   access_token_expire_seconds: int
   algorithm: str
   secret_key: str
