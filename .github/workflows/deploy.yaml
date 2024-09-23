@@ -66,7 +66,7 @@ jobs:
         echo "::set-output name=access_token_expire_seconds::$(echo -n ${{ secrets.ACCESS_TOKEN_EXPIRE_SECONDS }} | base64)"
         echo "::set-output name=database::$(echo -n ${{ secrets.DATABASE }} | base64)"
         echo "::set-output name=client_origin::$(echo -n ${{ secrets.CLIENT_ORIGIN }} | base64)"
-        echo "::set-output name=client_origin::$(echo -n ${{ secrets.CLIENT_LOCALHOST }} | base64)"
+        echo "::set-output name=client_localhost::$(echo -n ${{ secrets.CLIENT_LOCALHOST }} | base64)"
         echo "::set-output name=mongo_pass::$(echo -n ${{ secrets.MONGO_PASS }} | base64)"
         echo "::set-output name=mongo_user::$(echo -n ${{ secrets.MONGO_USER }} | base64)"
         echo "::set-output name=mongo_cluster::$(echo -n ${{ secrets.MONGO_CLUSTER }} | base64)"
@@ -81,7 +81,7 @@ jobs:
         sed -i 's/<base64_encoded_access_token_expire_seconds>/'"${{ steps.secrets.outputs.access_token_expire_seconds }}"'/' config/deployment.yaml
         sed -i 's/<base64_encoded_database>/'"${{ steps.secrets.outputs.database }}"'/' config/deployment.yaml
         sed -i 's/<base64_encoded_client_origin>/'"${{ steps.secrets.outputs.client_origin }}"'/' config/deployment.yaml
-        sed -i 's/<base64_encoded_client_origin>/'"${{ steps.secrets.outputs.client_localhost }}"'/' config/deployment.yaml
+        sed -i 's/<base64_encoded_client_localhost>/'"${{ steps.secrets.outputs.client_localhost }}"'/' config/deployment.yaml
         sed -i 's/<base64_encoded_mongo_pass>/'"${{ steps.secrets.outputs.mongo_pass }}"'/' config/deployment.yaml
         sed -i 's/<base64_encoded_mongo_user>/'"${{ steps.secrets.outputs.mongo_user }}"'/' config/deployment.yaml
         sed -i 's/<base64_encoded_mongo_cluster>/'"${{ steps.secrets.outputs.mongo_cluster }}"'/' config/deployment.yaml
