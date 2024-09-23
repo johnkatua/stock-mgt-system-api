@@ -11,7 +11,7 @@ from app.config import Settings
 client_origin = os.getenv("CLIENT_ORIGIN")
 client_localhost = os.getenv("CLIENT_LOCALHOST")
 
-app = FastAPI()
+app = FastAPI(redirect_slashes=False)
 
 @lru_cache
 def get_settings() -> Settings:
