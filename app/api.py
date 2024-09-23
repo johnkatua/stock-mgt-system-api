@@ -9,6 +9,7 @@ from app.auth.auth_bearer import JWTBearer
 from app.config import Settings
 
 client_origin = os.getenv("CLIENT_ORIGIN")
+client_localhost = os.getenv("CLIENT_LOCALHOST")
 
 app = FastAPI()
 
@@ -21,7 +22,8 @@ def get_settings() -> Settings:
 settings = get_settings()
 
 origins = [
-  client_origin
+  client_origin,
+  client_localhost
 ]
 
 app.add_middleware(

@@ -9,6 +9,7 @@ data:
   ACCESS_TOKEN_EXPIRE_SECONDS: <base64_encoded_access_token_expire_seconds>
   DATABASE: <base64_encoded_database>
   CLIENT_ORIGIN: <base64_encoded_client_origin>
+  CLIENT_LOCALHOST: <base64_encoded_client_localhost>
   MONGO_PASS : <base64_encoded_mongo_pass>
   MONGO_USER : <base64_encoded_mongo_user>
   MONGO_CLUSTER : <base64_encoded_mongo_cluster>
@@ -71,6 +72,12 @@ spec:
             secretKeyRef:
               name: db-secrets
               key: CLIENT_ORIGIN
+
+        - name : CLIENT_LOCALHOST
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: CLIENT_LOCALHOST
         
         - name : MONGO_PASS
           valueFrom:
